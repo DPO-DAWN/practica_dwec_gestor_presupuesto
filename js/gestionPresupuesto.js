@@ -5,36 +5,38 @@ var presupuesto = 0;
 
 function actualizarPresupuesto(valorPresupuesto) {
     // TODO
-    if(presupuesto<0)
-    console.log('Has introducido un valor erróneo. \n -1');
+    if(valorPresupuesto>=0){
+    presupuesto=valorPresupuesto
+    return presupuesto;
+    }
     else
-    presupuesto=valorPresupuesto;
-    console.log(presupuesto);
-}
+    return -1;
+}   
 
 function mostrarPresupuesto() {
     // TODO
-    alert(`Tu presupuesto actual es de ${presupuesto}€`);
+    return `Tu presupuesto actual es de ${presupuesto} €`;
 }
 
-function CrearGasto(descripcion, valor) {
+function CrearGasto(texto, num) {
     // TODO
+    if(num<0 || isNaN(num))
+    num=0;
     let gasto={
-        texto: descripcion,
-        num: valor,
+        descripcion: texto,
+        valor: num,
         mostrarGasto(){
-            return `Gasto correspondietne a ${gasto.descripcion} con valor ${gasto.valor}€`;
+            return `Gasto correspondiente a ${gasto.descripcion} con valor ${gasto.valor} €`;
         },
         actualizarDescripcion(texto){
             this.descripcion= texto;
         },
         actualizarValor(num){
-            if (num<0)
-            return "Introduce un número positivo"
-            else
+            if (num>=0)
             this.valor=num;
         }
     }
+    return gasto;
 }
 
 // NO MODIFICAR A PARTIR DE AQUÍ: exportación de funciones y objetos creados para poder ejecutar los tests.
