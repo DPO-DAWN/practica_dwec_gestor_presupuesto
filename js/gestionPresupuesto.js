@@ -24,13 +24,23 @@ function listarGastos(){
     return gasto;
 }
 
-function anyadirGasto(gastos){
-    for(let i=0;i<gastos.length;i++)
-        gastos +=
+function anyadirGasto(g){
+    g.id= idGasto;
+    idGasto++;
+    gastos.push(g)
 }
 
-function borrarGasto(){
+function borrarGasto(ident){
+    for (let elem of gastos){
+        if(elem.id === ident)
+            gastos.splice(gastos.indexOf(elem),1);
+    }
+}
 
+function calcularTotalGastos(){
+    for (let elem of gastos)
+        for(let i=0;i<gastos.length;i++)
+            
 }
 
 function CrearGasto(texto, num, fec= new Date(), eti = []) {
@@ -60,8 +70,12 @@ function CrearGasto(texto, num, fec= new Date(), eti = []) {
             if(!this.eti.includes(this.etiqueta))
             this.etiqueta += [...eti];
         },
-        borrarEtiquetas(){
-
+        borrarEtiquetas(...eti){
+            for(let elem of eti){
+                if(this.etiqueta.includes(elem)){
+                    this.etiqueta.splice(this.etiqueta.indexOf(elem),1)
+                }                        
+            }
         }
     }
     return gasto;
