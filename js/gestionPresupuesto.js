@@ -21,7 +21,13 @@ function mostrarPresupuesto() {
 }
 
 function listarGastos(){
+    if(!gasto.length){
+    gasto = [];
+    return gasto
+    }
+    else{
     return gasto;
+    }
 }
 
 function anyadirGasto(g){
@@ -38,9 +44,27 @@ function borrarGasto(ident){
 }
 
 function calcularTotalGastos(){
+    let suma;
     for (let elem of gastos)
         for(let i=0;i<gastos.length;i++)
-            
+            suma+= gasto.valor(elem);
+    return suma;        
+}
+
+function calcularBalance(){
+    let balance;
+    let gastoTotal= calcularTotalGastos();
+    let presupuestoTotal = presupuesto;
+
+    balance = presupuestoTotal - gastoTotal;
+    return balance;
+}
+
+function filtrarGastos(){
+    let fechaD,fechaH,fD,fH;
+    let min,max,desc,et;
+    let gatosFiltrados= [];
+    
 }
 
 function CrearGasto(texto, num, fec= new Date(), eti = []) {
@@ -95,5 +119,8 @@ export   {
     anyadirGasto,
     borrarGasto,
     calcularTotalGastos,
-    calcularBalance
+    calcularBalance,
+    filtrarGastos,
+    agruparGastos,
+
 }
