@@ -21,13 +21,7 @@ function mostrarPresupuesto() {
 }
 
 function listarGastos(){
-    if(!gasto.length){
-    gasto = [];
-    return gasto
-    }
-    else{
-    return gasto;
-    }
+    return gastos;
 }
 
 function anyadirGasto(g){
@@ -44,11 +38,9 @@ function borrarGasto(ident){
 }
 
 function calcularTotalGastos(){
-    let suma;
-    for (let elem of gastos)
-        for(let i=0;i<gastos.length;i++)
-            suma+= gasto.valor(elem);
-    return suma;        
+    let suma = 0;
+    gastos.forEach((elem) => suma += elem.valor); 
+    return suma;    
 }
 
 function calcularBalance(){
@@ -60,22 +52,22 @@ function calcularBalance(){
     return balance;
 }
 
-function filtrarGastos(){
+/*function filtrarGastos(){
     let fechaD,fechaH,fD,fH;
     let min,max,desc,et;
     let gatosFiltrados= [];
     
-}
+}*/
 
-function CrearGasto(texto, num, fec= new Date(), eti = []) {
+function CrearGasto(texto, num, fec= Date.now(), ...eti) {
     // TODO
     if(num<0 || isNaN(num))
     num=0;
     let gasto={
         descripcion: texto,
         valor: num,
-        etiqueta: [...eti],
-        fecha: fec,
+        etiquetas: eti,
+        fecha: ((!isNaN(Date.parse(fec)) ? Date.parse(fec) : Date.now())) ,
         mostrarGasto(){
             return `Gasto correspondiente a ${gasto.descripcion} con valor ${gasto.valor} €`;
         },
@@ -86,20 +78,38 @@ function CrearGasto(texto, num, fec= new Date(), eti = []) {
             if (num>=0)
             this.valor=num;
         },
-        actualizarFecha(fec){
-            if(!isNaN(Date.parse(fec)))
-            this.fecha= Date.parse(fec);
+        actualizarFecha(f){
+            f=Date.parse(f);
+            if(!isNaN(f))
+            this.fecha=f;
         },
         anyadirEtiquetas(...eti){
-            if(!this.eti.includes(this.etiqueta))
-            this.etiqueta += [...eti];
+            for(let elem of eti)
+            {
+                if(!this.etiquetas.includes(elem))
+                this.etiquetas.push(elem);
+            }
         },
         borrarEtiquetas(...eti){
             for(let elem of eti){
-                if(this.etiqueta.includes(elem)){
-                    this.etiqueta.splice(this.etiqueta.indexOf(elem),1)
+                if(this.etiquetas.includes(elem)){
+                    this.etiquetas.splice(this.etiquetas.indexOf(elem),1)
                 }                        
             }
+        },
+        mostrarGastoCompleto(){                
+                let fecha1;
+                if(typeof this.fecha === 'string')                
+                    fecha1 = Date.parse(this.fecha);                  
+                else
+                    fecha1 = this.fecha;                    
+            let e = "";
+                for(let elem of this.etiquetas) { 
+                    e += `- ${elem}\n`;
+                };        
+            let fecha2 = new Date(fecha1);   
+            let texto = `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €.\nFecha: ${(fecha2.toLocaleString())}\nEtiquetas:\n`;
+            return texto + e;
         }
     }
     return gasto;
@@ -122,5 +132,4 @@ export   {
     calcularBalance,
     filtrarGastos,
     agruparGastos,
-
 }
